@@ -24,10 +24,13 @@ function error_response(code, message)
                                   content = nil}))
 end
 
-function success_response(content)
+function success_response(content, code, message)
     build_header()
-    return ngx.say(cjson.encode({code = 200,
-                                 message = 'OK',
+    local code = code or 200
+    local message = message or "OK"
+    ngx.status = code
+    return ngx.say(cjson.encode({code = code,
+                                 message = message,
                                  servertime = tonumber(os.date("%s")),
                                  content = content}))
 end
